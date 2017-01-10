@@ -37,8 +37,9 @@ class Filter(object):
         ''' Deletes every pdf file under any *totem folder whose name is not listed in the tournee xls'''
         for root, dirnames, filenames in os.walk(self.data_dir):
             if root.lower().endswith('totem'):
-                for filename in fnmatch.filter(filenames, '*.pdf'):
-                    os.remove(os.path.join(root, filename))
+                for file in [file for file in fnmatch.filter(filenames, '*.pdf')
+                             if os.path.splitext(os.path.basename(file))[0] not in self.tournees]:
+                    os.remove(os.path.join(root, file))
 
     def __is_empty(self, tab_content):
         '''Checks if a tab contains any value'''
